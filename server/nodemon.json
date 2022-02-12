@@ -1,3 +1,6 @@
 {
-    "ignore": "./swagger_output.json"
+    "watch": [
+        "src/"
+    ],
+    "ext": "ts"
 }

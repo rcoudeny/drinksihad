@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  # database -- reachable on 5432
+  glpostgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_PASSWORD=BartjeZekers
+      - POSTGRES_USER=rcdn
+      - POSTGRES_DB=drinksihad
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres:

@@ -6,8 +6,25 @@
         "moduleResolution": "node",
         "rootDir": "./src",
         "sourceMap": true,
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "extendedDiagnostics": true,
+        "lib": [
+            "es2017"
+        ],
+        "emitDeclarationOnly": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "incremental": true,
+        "noResolve": false,
+        "noEmitOnError": false,
+        "noImplicitAny": true,
+        "declaration": true,
+        "skipLibCheck": true
     },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
     "exclude": [
         "./node_modules"
     ],
