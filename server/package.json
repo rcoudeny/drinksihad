@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "start": "tsc && node swagger.js",
+    "start": "tsc && node --inspect swagger.js",
     "dev": "nodemon --exec \"npm run start\"",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -36,10 +36,13 @@
     "cookie-parser": "^1.4.6",
     "dayjs": "^1.10.7",
     "express": "^4.17.2",
+    "pg": "^8.7.3",
     "pino": "^7.6.5",
     "pino-pretty": "^7.5.1",
+    "reflect-metadata": "^0.1.13",
     "swagger": "^0.7.5",
     "swagger-autogen": "^2.18.8",
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "typeorm": "^0.2.41"
   }
 }

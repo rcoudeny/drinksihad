@@ -1,0 +1,16 @@
+{
+    "name": "drinksihad",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "rcdn",
+    "password": "BartjeZekers",
+    "database": "drinksihad",
+    "entities": [
+        "dist/database/entity/**.entity.js}"
+    ],
+    "migrations": [
+        "dist/database/migration/**.migration.js}"
+    ],
+    "autoSchemaSync": true
+}

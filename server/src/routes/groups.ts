@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 /* GET quotes listing. */
-router.get('/', function(req: any, res: { json: (arg0: { data: { quote: string; author: string; }[]; meta: { page: number; }; }) => void; }, next: any) {
+router.get('/', function (req: any, res: { json: (arg0: { data: { quote: string; author: string; }[]; meta: { page: number; }; }) => void; }, next: any) {
   res.json({
     data: [
       {
