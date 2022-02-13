@@ -13,9 +13,15 @@ export class User {
     lastName: string;
 
     @Column()
+    email: string;
+
+    @Column({ type: 'date', nullable: true })
     birthday: Date;
 
     @Column()
     password: string;
 
+    isValidNewUser(): boolean {
+        return true;
+    }
 }

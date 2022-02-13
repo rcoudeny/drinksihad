@@ -6,7 +6,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "src/app.ts",
-      "preLaunchTask": "npm run dev",
+      "preLaunchTask": "npm start",
       "outFiles": ["dist/**/*.js"]
     }
   ]

@@ -1,5 +1,5 @@
 {
-    "name": "drinksihad",
+    "name": "default",
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
@@ -7,10 +7,11 @@
     "password": "BartjeZekers",
     "database": "drinksihad",
     "entities": [
-        "dist/database/entity/**.entity.js}"
+        "dist/database/entity/**.entity.js"
     ],
     "migrations": [
-        "dist/database/migration/**.migration.js}"
+        "dist/database/migration/**.migration.js"
     ],
-    "autoSchemaSync": true
+    "autoSchemaSync": true,
+    "synchronize": true
 }
