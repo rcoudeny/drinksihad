@@ -10,7 +10,7 @@ import { UserController } from "./controller/user.controller";
 
 const PORT = process.env.PORT || 3001;
 
-log.info("starting connection with database")
+log.info("starting connection with database");
 createConnection().then(async connection => {
     // create and setup express app
     log.info("Connection established");
@@ -25,4 +25,7 @@ createConnection().then(async connection => {
     app.listen(PORT, () => {
         log.info('server is listening on port ' + PORT);
     });
+})
+.catch(function(e) {
+    log.error(e);
 });

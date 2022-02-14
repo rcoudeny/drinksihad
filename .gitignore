@@ -1,4 +1,7 @@
 /server/dist
+server/package-lock.json
+server/tsconfig.tsbuildinfo
+
 /server/node_modules
 /client/node_modules
 
@@ -16,3 +19,4 @@
 /client/.pnp
 /client/.pnp.js
 /client/*.css
+server/tsconfig.tsbuildinfo

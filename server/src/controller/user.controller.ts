@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from "routing-controllers";
-import { User } from "../database/entity/user.entity";
+import { CreateUserDTO } from './../DTOs/user.dto';
+import { Body, Get, JsonController, Param, Post } from "routing-controllers";
+import log from "../logger";
 import { getAllUsers, getUserWithId } from "../manager/users.manager";
 
-@Controller('/users')
+@JsonController('/users')
 export class UserController {
     @Get('/')
     getAll() {
@@ -13,7 +14,8 @@ export class UserController {
         return getUserWithId(id);
     }
     @Post('/')
-    createUser(@Body() user: User) {
-        return 'Create a user with name ' + user.firstName;
+    createUser(@Body() user: CreateUserDTO) {
+        log.info('Created a user with name ' + user.firstName);
+        return user;
     }
 }

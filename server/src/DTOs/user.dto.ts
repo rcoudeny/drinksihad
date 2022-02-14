@@ -8,6 +8,10 @@ export class UserDTO {
     birthday: Date;
 }
 
+export class CreateUserDTO extends UserDTO {
+    password: string;
+}
+
 export function toUserDTO(user: User): UserDTO {
     let userDTO = new UserDTO();
     userDTO.firstName = user.firstName
