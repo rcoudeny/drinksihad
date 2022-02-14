@@ -12,7 +12,7 @@ export class User {
     @Column()
     lastName: string;
 
-    @Column()
+    @Column() // BUG: Unique email
     email: string;
 
     @Column({ type: 'date', nullable: true })

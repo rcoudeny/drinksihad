@@ -7,7 +7,7 @@ import { ResponseSchema } from 'routing-controllers-openapi';
 export class GroupsController {
     @Get('/')
     getAllGroups() {
-        // TODO: return all groups the logged in user is in
+        // TODORC: return all groups the logged in user is in
         return GroupsService.getMyGroups();
     }
 
@@ -20,13 +20,13 @@ export class GroupsController {
     @Post('/')
     @ResponseSchema(CreateGroupDTO)
     createGroup(@Body() group: CreateGroupDTO) {
-        // TODO: return the group with this id
+        // TODORC: return the group with this id
         return GroupsService.createGroup(group);
     }
 
     @Delete('/:id')
     deleteGroupWithId(@Param('id') id: string) {
-        // TODO: Delete the group with id when user is owner of group
+        // TODORC: Delete the group with id when user is owner of group
         return GroupsService.deleteGroupWithId(id);
     }
 }
