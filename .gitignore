@@ -18,5 +18,5 @@ server/tsconfig.tsbuildinfo
 /client/coverage
 /client/.pnp
 /client/.pnp.js
-/client/**.css
+/client/**/*.css
 server/tsconfig.tsbuildinfo
