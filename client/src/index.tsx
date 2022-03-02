@@ -7,6 +7,7 @@ import Register from './routes/Authentication/Register';
 import Login from './routes/Authentication/Login';
 import Home from './routes/Home/Home';
 import App from './components/App/App';
+import Groups from './routes/Groups/GroupsOverview';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -15,6 +16,7 @@ ReactDOM.render(
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="groups" element={<Groups />} />
       </Route>
     </Routes>
   </BrowserRouter>,

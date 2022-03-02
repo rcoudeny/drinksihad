@@ -1,10 +1,9 @@
 div.navigationContainer {
   border-bottom: 1px solid black;
   padding-bottom: 1rem; }
-
-div.navigationContainer .navigationWrapper {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between; }
+  div.navigationContainer .navigationWrapper {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
