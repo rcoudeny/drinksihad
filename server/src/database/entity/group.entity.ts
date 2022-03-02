@@ -1,52 +1,25 @@
+import { type } from "os";
+import { ManyToMany, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { Drink } from "./drink.entity";
 import { User } from "./user.entity";
+import { UserDrink } from "./userdrink.entity";
 
 const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
 
-@Entity()
+@Entity('d_group')
 export class Group {
-
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
     @Column()
     name: string;
 
-    @Column()
-    admin: User;
+    @ManyToMany(() => User, user => user.groups)
+    users: User[];
 
-    @Column()
-    users: Array<User>
+    @OneToMany(() => Drink, drink => drink.group)
+    drinks: Drink[];
 
-    @Column()
-    drinks: Array<Drink>
-
-    @Column()
-    userDrinks: Array<UserDrink>;
-}
-
-@Entity()
-export class Drink {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-
-    @Column()
-    name: string;
-
-    @Column()
-    price: number;
-}
-
-@Entity()
-export class UserDrink {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-
-    @Column()
-    user: User;
-
-    @Column()
-    drink: Drink;
-
-    @Column()
-    count: number;
+    @OneToMany(() => UserDrink, userdrink => userdrink.group)
+    userDrinks: UserDrink[];
 }

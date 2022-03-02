@@ -3,20 +3,18 @@ import { getConnection } from 'typeorm';
 import { User } from '../database/entity/user.entity';
 import { UserDTO, UsersMapper } from '../DTOs/user.dto';
 import { UserRepository } from '../database/repository/user.repository';
+import { validate } from 'class-validator';
+import log from '../logger';
 
 export abstract class UsersService {
     static async createUser(createUserDTO: CreateUserDTO): Promise<User> {
         let user: User = new User();
         UsersMapper.toUser(createUserDTO);
-
-        if (user.isValidNewUser()) {
-
-            const userRepository = getConnection().getCustomRepository(UserRepository);
-            await userRepository.save(user);
-            return user;
-        } else {
-            return null;
-        }
+        const errors = await validate(user);
+        log.error(errors);
+        const userRepository = getConnection().getCustomRepository(UserRepository);
+        await userRepository.save(user);
+        return user;
     }
 
     static async getAllUsers(): Promise<UserDTO[]> {

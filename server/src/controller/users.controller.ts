@@ -29,7 +29,7 @@ export class UsersController {
     @ResponseSchema(CreateUserDTO)
     createUser(@Body() user: CreateUserDTO) {
         UsersService.createUser(user);
-        log.info('Created a user with name ' + user.firstName);
+        log.info('Created a user with name ' + user.username);
         return user;
     }
 }

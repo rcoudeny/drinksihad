@@ -9,6 +9,7 @@ import { createExpressServer, getMetadataArgsStorage } from "routing-controllers
 import { UsersController } from "./controller/users.controller";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+import { DatabaseHelper } from './database/database.helper';
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
 
 const PORT = process.env.PORT || 3001;
@@ -25,6 +26,7 @@ const schemas = validationMetadatasToSchemas({
 
 log.info("starting connection with database");
 createConnection().then(async connection => {
+    DatabaseHelper.cleanAllEntities();
     // create and setup express app
     log.info("Connection established");
     const app = createExpressServer(routingControllersOptions);
