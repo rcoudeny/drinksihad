@@ -1,7 +1,7 @@
 import { RegisterDTO } from '../DTOs/user.dto';
 import { getConnection } from 'typeorm';
 import { User } from '../database/entity/user.entity';
-import { UserDTO, UsersMapper } from '../DTOs/user.dto';
+import { UserDTO, UserMapper } from '../DTOs/user.dto';
 import { UserRepository } from '../database/repository/user.repository';
 import { validate } from 'class-validator';
 import log from '../logger';
@@ -9,9 +9,9 @@ import { HttpError } from 'routing-controllers';
 
 export abstract class UsersService {
     static async createUser(registerDTO: RegisterDTO): Promise<User> {
-        const errors = await validate(registerDTO);
+        let user: User = UserMapper.registerDTOToUser(registerDTO);
+        const errors = await validate(user);
         if (!errors.length) {
-            let user: User = UsersMapper.registerDTOToUser(registerDTO);
             const userRepository = getConnection().getCustomRepository(UserRepository);
             await userRepository.save(user);
             return user;
@@ -21,12 +21,12 @@ export abstract class UsersService {
 
     static async getAllUsers(): Promise<UserDTO[]> {
         const userRepository = getConnection().getCustomRepository(UserRepository);
-        const users: UserDTO[] = (await userRepository.find()).map(user => UsersMapper.toUserDTO(user));
+        const users: UserDTO[] = (await userRepository.find()).map(user => UserMapper.toUserDTO(user));
         return users;
     }
 
     static async getUserWithId(id: string): Promise<UserDTO> {
         const userRepository = getConnection().getCustomRepository(UserRepository);
-        return UsersMapper.toUserDTO(await userRepository.findOne());
+        return UserMapper.toUserDTO(await userRepository.findOne());
     }
 }

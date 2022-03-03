@@ -1,13 +1,25 @@
-import { IsEmail, IsNotEmpty, IsObject } from "class-validator";
+import { IsArray, IsEmail, IsNotEmpty, IsObject, IsUUID } from "class-validator";
+import { Group } from "../database/entity/group.entity";
 import { User } from "../database/entity/user.entity";
 import { UsernameValidation } from "../validation/username.validation";
+import { GroupDTO, GroupMapper } from "./group.dto";
 
 export class UserDTO {
+    @IsUUID()
     id: string;
     @UsernameValidation()
     username: string;
     @IsEmail()
     email: string;
+    @IsArray()
+    groups: GroupDTO[]
+
+    setGroups(groups: Group[]) {
+        this.groups = [];
+        groups.map(function (group) {
+            this.groups.push(GroupMapper.toGroupDTO(group));
+        });
+    }
 }
 
 export class LoginDTO {
@@ -26,18 +38,22 @@ export class RegisterDTO {
     password: string;
 }
 
-export abstract class UsersMapper {
+export abstract class UserMapper {
     static toUserDTO(user: User): UserDTO {
         let userDTO = new UserDTO();
+        userDTO.id = user.id;
         userDTO.username = user.username;
         userDTO.email = user.email;
+        userDTO.setGroups(user.groups);
         return userDTO;
     }
 
     static registerDTOToUser(registerDTO: RegisterDTO): User {
-        let user: User = new User();
+        let user = new User();
         user.email = registerDTO.email;
         user.username = registerDTO.username;
+        user.password = registerDTO.password;
+        user.groups = [];
         return user;
     }
 }
