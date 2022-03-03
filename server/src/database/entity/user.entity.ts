@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty, Length, MinLength } from "class-validator";
+import { IsArray, IsEmail, IsNotEmpty, Length, MinLength, Validate } from "class-validator";
 import { JoinTable, ManyToMany } from "typeorm";
+import { UsernameValidation } from "../../validation/username.validation";
 import { Group } from "./group.entity";
 
 const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
@@ -11,21 +12,20 @@ export class User {
     id: string;
 
     @Column()
-    @Length(2, 30, { message: "A username should contain between 2 and 30 characters" })
-    @IsNotEmpty({ message: 'A username is required' })
+    @UsernameValidation()
     username: string;
 
     @Column({ unique: true })
-    @IsEmail({}, { message: 'Incorrect email' })
-    @IsNotEmpty({ message: 'The email is required' })
+    @IsEmail()
     email: string;
 
     @Column()
-    @MinLength(6, { message: 'The password must be at least 6 but not longer than 30 characters' })
-    @IsNotEmpty({ message: 'The password is required' })
+    @MinLength(6)
+    @IsNotEmpty()
     password: string;
 
     @ManyToMany(() => Group, group => group.users)
+    @IsArray()
     @JoinTable()
     groups: Group[];
 }

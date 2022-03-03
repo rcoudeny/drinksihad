@@ -1,6 +1,6 @@
-import { CreateGroupDTO } from './../DTOs/group.dto';
+import { GroupDTO } from './../DTOs/group.dto';
 export abstract class GroupsService {
-    static async createGroup(group: CreateGroupDTO): Promise<string> {
+    static async createGroup(group: GroupDTO): Promise<string> {
         return "create group with name " + group.name;
     }
     static async getGroupWithId(id: string): Promise<string> {

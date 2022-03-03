@@ -1,5 +1,4 @@
-import { type } from "os";
-import { ManyToMany, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { ManyToMany, OneToMany } from "typeorm";
 import { Drink } from "./drink.entity";
 import { User } from "./user.entity";
 import { UserDrink } from "./userdrink.entity";

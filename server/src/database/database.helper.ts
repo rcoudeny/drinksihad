@@ -14,7 +14,7 @@ export abstract class DatabaseHelper {
    * Returns the entites of the database
    */
     static async getEntities() {
-        const entities: Array<Entity> = [];
+        const entities: Entity[] = [];
         (getConnection().entityMetadatas).forEach(
             x => entities.push({ name: x.name, tableName: x.tableName })
         );
@@ -33,7 +33,7 @@ export abstract class DatabaseHelper {
     /**
      * Cleans all the entities
      */
-    static async cleanAll(entities: Array<Entity>) {
+    static async cleanAll(entities: Entity[]) {
         try {
             for (const entity of entities) {
                 const repository = getConnection().getRepository(entity.name);
@@ -65,7 +65,7 @@ export abstract class DatabaseHelper {
     /**
      * Insert the data from the src/test/fixtures folder
      */
-    static async loadAll(entities: Array<Entity>) {
+    static async loadAll(entities: Entity[]) {
         try {
             for (const entity of entities) {
                 const repository = getConnection().getRepository(entity.name);

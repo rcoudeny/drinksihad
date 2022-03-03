@@ -43,7 +43,7 @@ createConnection().then(async connection => {
             },
         },
         info: {
-            description: 'Generated with `routing-controllers-openapi`',
+            description: 'Created by `Robbe Coudenys` in collaboration with `Hyphen Solutions`',
             title: 'Backend API for DrinksIHad',
             version: '1.0.0',
         },

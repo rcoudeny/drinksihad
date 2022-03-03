@@ -1,5 +1,5 @@
 import { UsersService } from '../service/users.service';
-import { CreateUserDTO } from '../DTOs/user.dto';
+import { RegisterDTO, UserDTO } from '../DTOs/user.dto';
 import { Body, Get, JsonController, Param, Post } from "routing-controllers";
 import log from "../logger";
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
@@ -7,6 +7,8 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 @JsonController('/users')
 export class UsersController {
     @Get('/')
+
+    @ResponseSchema(UserDTO, { isArray: true })
     @OpenAPI({
         summary: 'Get all users',
         description: 'Lists all available users',
@@ -16,20 +18,18 @@ export class UsersController {
             },
         },
     })
-    getAll() {
+    getAll(): Promise<UserDTO[]> {
         return UsersService.getAllUsers();
     }
 
     @Get('/:id')
-    getUserWithId(@Param('id') id: string) {
+    getUserWithId(@Param('id') id: string): Promise<UserDTO> {
         return UsersService.getUserWithId(id);
     }
 
     @Post('/')
-    @ResponseSchema(CreateUserDTO)
-    createUser(@Body() user: CreateUserDTO) {
-        UsersService.createUser(user);
-        log.info('Created a user with name ' + user.username);
-        return user;
+    @ResponseSchema(RegisterDTO)
+    createUser(@Body() user: RegisterDTO) {
+        return UsersService.createUser(user);
     }
 }

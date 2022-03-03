@@ -1,4 +1,4 @@
-import { CreateGroupDTO, GroupDTO } from './../DTOs/group.dto';
+import { GroupDTO } from './../DTOs/group.dto';
 import { Body, Delete, Get, JsonController, Param, Post } from "routing-controllers";
 import { GroupsService } from "../service/groups.service";
 import { ResponseSchema } from 'routing-controllers-openapi';
@@ -18,8 +18,8 @@ export class GroupsController {
     }
 
     @Post('/')
-    @ResponseSchema(CreateGroupDTO)
-    createGroup(@Body() group: CreateGroupDTO) {
+    @ResponseSchema(GroupDTO)
+    createGroup(@Body() group: GroupDTO) {
         // TODORC: return the group with this id
         return GroupsService.createGroup(group);
     }
