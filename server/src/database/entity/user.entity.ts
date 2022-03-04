@@ -22,7 +22,11 @@ export class User {
     @Column()
     @MinLength(6)
     @IsNotEmpty()
-    password: string;
+    hashedPassword: string;
+
+    @Column()
+    @IsNotEmpty()
+    salt: string;
 
     @ManyToMany(() => Group, group => group.users, { cascade: true })
     @IsArray()

@@ -28,7 +28,7 @@ const routingControllersOptions = {
         // here you can use request/response objects from action
         // you need to provide a user object that will be injected in controller actions
         // demo code:
-        const token = action.request.headers['authorization'].split(" ")[1];
+        const token = action.request.headers['authorization'].replace('Bearer ', '');
         return TokenService.getCurrentUser(token);
     },
 };
@@ -40,7 +40,7 @@ const schemas = validationMetadatasToSchemas({
 
 log.info("starting connection with database");
 createConnection().then(async connection => {
-    // DatabaseHelper.cleanAllEntities();
+    DatabaseHelper.cleanAllEntities();
     // create and setup express app
     log.info("Connection established");
     const app = createExpressServer(routingControllersOptions);
@@ -54,7 +54,7 @@ createConnection().then(async connection => {
                 //     scheme: 'basic',
                 //     type: 'http',
                 // },
-                "AuthToken": {
+                bearerAuth: {
                     "type": "http",
                     "scheme": "bearer",
                     "bearerFormat": "JWT",

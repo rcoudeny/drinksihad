@@ -63,7 +63,6 @@ export abstract class UserMapper {
         let user = new User();
         user.email = registerDTO.email;
         user.username = registerDTO.username;
-        user.password = registerDTO.password;
         user.groups = [];
         return user;
     }
