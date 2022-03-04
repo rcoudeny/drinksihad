@@ -48,6 +48,17 @@ export abstract class UserMapper {
         return userDTO;
     }
 
+    static userDTOToUser(userDTO: UserDTO): User {
+        let user = new User();
+        user.id = userDTO.id;
+        user.email = userDTO.email;
+        user.username = userDTO.username;
+        user.groups = userDTO.groups.map(function (group) {
+            return GroupMapper.groupDTOToGroup(group);
+        });
+        return user;
+    }
+
     static registerDTOToUser(registerDTO: RegisterDTO): User {
         let user = new User();
         user.email = registerDTO.email;

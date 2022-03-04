@@ -1,3 +1,4 @@
+import { IsNotEmpty } from "class-validator";
 import { ManyToMany, OneToMany } from "typeorm";
 import { Drink } from "./drink.entity";
 import { User } from "./user.entity";
@@ -11,6 +12,7 @@ export class Group {
     id: string;
 
     @Column()
+    @IsNotEmpty()
     name: string;
 
     @ManyToMany(() => User, user => user.groups)

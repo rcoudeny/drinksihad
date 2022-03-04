@@ -1,22 +1,36 @@
-import { GroupsController } from './controller/groups.controller';
+import { GroupController } from './controller/group.controller';
 import log from "./logger";
 import "reflect-metadata";
-const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const cookieParser = require('cookie-parser');
 import { createConnection } from "typeorm";
-import { createExpressServer, getMetadataArgsStorage } from "routing-controllers";
-import { UsersController } from "./controller/users.controller";
+import { Action, createExpressServer, getMetadataArgsStorage } from "routing-controllers";
+import { UsersController } from "./controller/user.controller";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { DatabaseHelper } from './database/database.helper';
+import { TokenService } from './service/token.service';
+const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const cookieParser = require('cookie-parser');
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
+
+const dotenv = require('dotenv');
+dotenv.config();
+
+// access config var
+process.env.TOKEN_SECRET;
 
 const PORT = process.env.PORT || 3001;
 
 const routingControllersOptions = {
-    controllers: [UsersController, GroupsController],
+    controllers: [UsersController, GroupController],
     routePrefix: '/api',
+    currentUserChecker: async (action: Action) => {
+        // here you can use request/response objects from action
+        // you need to provide a user object that will be injected in controller actions
+        // demo code:
+        const token = action.request.headers['authorization'].split(" ")[1];
+        return TokenService.getCurrentUser(token);
+    },
 };
 
 const schemas = validationMetadatasToSchemas({
@@ -26,7 +40,7 @@ const schemas = validationMetadatasToSchemas({
 
 log.info("starting connection with database");
 createConnection().then(async connection => {
-    DatabaseHelper.cleanAllEntities();
+    // DatabaseHelper.cleanAllEntities();
     // create and setup express app
     log.info("Connection established");
     const app = createExpressServer(routingControllersOptions);
@@ -36,9 +50,15 @@ createConnection().then(async connection => {
         components: {
             schemas,
             securitySchemes: {
-                basicAuth: {
-                    scheme: 'basic',
-                    type: 'http',
+                // basicAuth: {
+                //     scheme: 'basic',
+                //     type: 'http',
+                // },
+                "AuthToken": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT",
+                    description: "A JWT based access token. Use /api/auth/login or /api/auth/refresh to get one."
                 },
             },
         },
