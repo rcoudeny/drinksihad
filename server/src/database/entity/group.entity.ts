@@ -6,7 +6,7 @@ import { UserDrink } from "./userdrink.entity";
 
 const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
 
-@Entity('d_group')
+@Entity()
 export class Group {
     @PrimaryGeneratedColumn("uuid")
     id: string;

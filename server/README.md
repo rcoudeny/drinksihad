@@ -2,9 +2,9 @@
 This is the node js with typescript backend for the app
 # TODO #
 
-- [ ] Add authentication
-  - [ ] Creating user with password and hash
-  - [ ] Logging in with tokenservice (maybe use JWT-tokens?)
+- [x] Add authentication
+  - [x] Creating user with password and hash
+  - [x] Logging in with tokenservice (maybe use JWT-tokens?)
 - [ ] Create a group
   - [ ] Invite users to group 
     - [ ] (share group code) -> 

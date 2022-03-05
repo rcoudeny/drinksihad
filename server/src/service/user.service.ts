@@ -24,10 +24,10 @@ export abstract class UserService {
 
     static async login(loginDTO: LoginDTO): Promise<string> {
         const user: User = await UserService.getUserWithEmail(loginDTO.email);
-        if (PasswordService.isCorrectPassword(loginDTO.password, user.hashedPassword, user.salt)) {
+        if (user && PasswordService.isCorrectPassword(loginDTO.password, user.hashedPassword, user.salt)) {
             return TokenService.generateAccessToken(UserMapper.toUserDTO(user));
         }
-        throw new HttpError(404, 'Wrong credentials');
+        throw new HttpError(401, 'Wrong credentials');
     }
 
     static async getAllUsers(): Promise<User[]> {

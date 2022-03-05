@@ -5,7 +5,7 @@ import { Group } from "./group.entity";
 
 const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
 
-@Entity('d_user')
+@Entity()
 export class User {
 
     @PrimaryGeneratedColumn("uuid")

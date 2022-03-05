@@ -8,15 +8,16 @@ import Login from './routes/Authentication/Login';
 import Home from './routes/Home/Home';
 import App from './components/App/App';
 import Groups from './routes/Groups/GroupsOverview';
+import { ROUTE_GROUPS, ROUTE_LOGIN, ROUTE_REGISTER } from './service/constants';
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="groups" element={<Groups />} />
+        <Route path={ROUTE_LOGIN} element={<Login />} />
+        <Route path={ROUTE_REGISTER} element={<Register />} />
+        <Route path={ROUTE_GROUPS} element={<Groups />} />
       </Route>
     </Routes>
   </BrowserRouter>,

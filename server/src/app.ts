@@ -3,7 +3,7 @@ import log from "./logger";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Action, createExpressServer, getMetadataArgsStorage } from "routing-controllers";
-import { UsersController } from "./controller/user.controller";
+import { UserController } from "./controller/user.controller";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { DatabaseHelper } from './database/database.helper';
@@ -12,6 +12,7 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const cookieParser = require('cookie-parser');
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
+var cors = require('cors')
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -22,14 +23,21 @@ process.env.TOKEN_SECRET;
 const PORT = process.env.PORT || 3001;
 
 const routingControllersOptions = {
-    controllers: [UsersController, GroupController],
+    controllers: [UserController, GroupController],
+    cors: {
+        origin: '*'// TODORC: replace with correct origin //'http://localhost:3000'
+    },
+    cookieParser: cookieParser(),
     routePrefix: '/api',
     currentUserChecker: async (action: Action) => {
         // here you can use request/response objects from action
         // you need to provide a user object that will be injected in controller actions
         // demo code:
         const token = action.request.headers['authorization'].replace('Bearer ', '');
-        return TokenService.getCurrentUser(token);
+        if (token) {
+            return TokenService.getCurrentUser(token);
+        }
+        return null;
     },
 };
 
@@ -40,7 +48,7 @@ const schemas = validationMetadatasToSchemas({
 
 log.info("starting connection with database");
 createConnection().then(async connection => {
-    DatabaseHelper.cleanAllEntities();
+    // DatabaseHelper.cleanAllEntities();
     // create and setup express app
     log.info("Connection established");
     const app = createExpressServer(routingControllersOptions);
@@ -50,10 +58,6 @@ createConnection().then(async connection => {
         components: {
             schemas,
             securitySchemes: {
-                // basicAuth: {
-                //     scheme: 'basic',
-                //     type: 'http',
-                // },
                 bearerAuth: {
                     "type": "http",
                     "scheme": "bearer",
@@ -72,7 +76,6 @@ createConnection().then(async connection => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    app.use(cookieParser());
     app.listen(PORT, () => {
         log.info('server is listening on port ' + PORT);
     });

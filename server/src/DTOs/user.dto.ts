@@ -16,6 +16,9 @@ export class UserDTO {
 
     setGroups(groups: Group[]) {
         this.groups = [];
+        if (!groups) {
+            return;
+        }
         groups.map(function (group) {
             this.groups.push(GroupMapper.toGroupDTO(group));
         });
@@ -61,7 +64,7 @@ export abstract class UserMapper {
 
     static registerDTOToUser(registerDTO: RegisterDTO): User {
         let user = new User();
-        user.email = registerDTO.email;
+        user.email = registerDTO.email.toLowerCase();
         user.username = registerDTO.username;
         user.groups = [];
         return user;

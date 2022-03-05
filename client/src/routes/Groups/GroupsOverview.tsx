@@ -1,5 +1,5 @@
-import groups from "../../mockdata/groups";
 import { GroupDTO } from "../../models/GroupDTO";
+import GroupService from "../../service/group.service";
 
 export default function Groups() {
 
@@ -16,7 +16,7 @@ export default function Groups() {
             <div className="groupsContainer">
                 <h1>Groups</h1>
                 <div>
-                    {groups.map(function (group) {
+                    {GroupService.getGroups().map(function (group) {
                         return <GroupTemplate key={group.id} {...group}></GroupTemplate>
                     })}
                 </div>
