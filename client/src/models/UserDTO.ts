@@ -17,3 +17,9 @@ export interface User {
     email: string;
     groups: GroupDTO[];
 }
+
+export interface UserWithAdminDTO {
+    username: string;
+    email: string;
+    isAdmin: boolean;
+}

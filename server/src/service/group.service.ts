@@ -4,6 +4,7 @@ import { User } from '../database/entity/user.entity';
 import { GroupRepository } from '../database/repository/group.repository';
 import { UserGroupRepository } from '../database/repository/usergroup.repository';
 import { CreateGroupDTO, GroupDTO, GroupWithAdminDTO } from '../DTOs/group.dto';
+import { UserWithAdminDTO } from '../DTOs/user.dto';
 import { UserService } from './user.service';
 export abstract class GroupService {
     static async createGroup(userId: string, createGroupDTO: CreateGroupDTO): Promise<Group> {
@@ -21,6 +22,23 @@ export abstract class GroupService {
     static async getGroupWithId(id: string): Promise<GroupDTO> {
         const groupRepository = getCustomRepository(GroupRepository);
         return groupRepository.findOne(id);
+    }
+    static async getUsersFromGroupWithId(groupId: string): Promise<UserWithAdminDTO[]> {
+        const userGroupRepository = getCustomRepository(UserGroupRepository);
+        return (await userGroupRepository.find({
+            relations: ['user'],
+            where: {
+                group: {
+                    id: groupId
+                }
+            }
+        })).map(function (userGroup) {
+            return {
+                username: userGroup.user.username,
+                email: userGroup.user.email,
+                isAdmin: userGroup.isAdmin
+            }
+        });
     }
     static async getGroupsFromUserWithId(userId: string): Promise<GroupDTO[]> {
         const userGroupRepository = getCustomRepository(UserGroupRepository);

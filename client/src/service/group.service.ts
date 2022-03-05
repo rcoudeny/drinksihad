@@ -1,4 +1,5 @@
 import { CreateGroup, GroupDTO } from "../models/GroupDTO";
+import { UserWithAdminDTO } from "../models/UserDTO";
 import ApiService from "./api.service";
 import { CREATE_GROUP, GROUPS } from "./constants";
 
@@ -27,8 +28,18 @@ const GroupService = {
                 resolve(response.data);
             }).catch(function (error) {
                 reject(error.response.data.message);
-            })
-        })
+            });
+        });
+    },
+    getUsersFromGroup: function (id: string): Promise<UserWithAdminDTO[]> {
+        return new Promise((resolve, reject) => {
+            ApiService.getCall(GROUPS + id + "/users").then(function (response) {
+                resolve(response.data);
+            }).catch(function (error) {
+                reject(error.response.data.message);
+            });
+        });
+
     }
 }
 export default GroupService;

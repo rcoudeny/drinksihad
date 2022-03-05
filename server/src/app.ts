@@ -6,12 +6,10 @@ import { Action, createExpressServer, getMetadataArgsStorage, RoutingControllers
 import { UserController } from "./controller/user.controller";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
-import { DatabaseHelper } from './database/database.helper';
 import { TokenService } from './service/token.service';
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
-const expressPinoLogger = require('express-pino-logger');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -46,8 +44,6 @@ const schemas = validationMetadatasToSchemas({
 
 log.info("Starting connection with database");
 createConnection().then(async connection => {
-    // DatabaseHelper.cleanAllEntities();
-    // create and setup express app
     log.info("Connection established");
     const app = createExpressServer(routingControllersOptions);
 
@@ -74,12 +70,6 @@ createConnection().then(async connection => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-
-    // const loggerMidlleware = expressPinoLogger({
-    //     logger: log,
-    //     autoLogging: true,
-    // });
-    // app.use(loggerMidlleware);
 
     app.listen(PORT, () => {
         log.info('Server is listening on port ' + PORT);

@@ -25,6 +25,14 @@ export class UserDTO {
     }
 }
 
+export class UserWithAdminDTO {
+    @UsernameValidation()
+    username: string;
+    @IsEmail()
+    email: string;
+    isAdmin: boolean;
+}
+
 export class LoginDTO {
     @IsEmail()
     email: string;

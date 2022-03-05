@@ -2,7 +2,7 @@ import { CreateGroupDTO, GroupDTO } from '../DTOs/group.dto';
 import { Body, CurrentUser, Delete, Get, JsonController, Param, Post } from "routing-controllers";
 import { GroupService } from "../service/group.service";
 import { ResponseSchema } from 'routing-controllers-openapi';
-import { UserDTO } from '../DTOs/user.dto';
+import { UserDTO, UserWithAdminDTO } from '../DTOs/user.dto';
 
 @JsonController('/groups')
 export class GroupController {
@@ -28,5 +28,10 @@ export class GroupController {
     deleteGroupWithId(@Param('id') id: string) {
         // TODORC: Delete the group with id when user is owner of group
         return GroupService.deleteGroupWithId(id);
+    }
+
+    @Get('/:id/users')
+    getUsersFromGroupWithId(@Param('id') id: string): Promise<UserWithAdminDTO[]> {
+        return GroupService.getUsersFromGroupWithId(id);
     }
 }
