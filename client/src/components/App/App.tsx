@@ -5,24 +5,26 @@ import { UserContext } from './contexts';
 import React from 'react';
 import { User } from '../../models/UserDTO';
 import { ROUTE_GROUPS, ROUTE_LOGIN } from '../../service/constants';
+import ApiService from '../../service/api.service';
 
 interface StateInterface {
   user: User | null
 }
 
 class AppLogic extends React.Component<{ navigate: any }, StateInterface> {
-  // navigate = useNavigate();
+
+
   constructor(props: any) {
     super(props);
     this.state = {
-      user: null
+      user: ApiService.currentUser()
     };
-
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
 
   logout() {
+    ApiService.setToken("");
     this.setState({ user: null });
     this.props.navigate(ROUTE_LOGIN);
   }
