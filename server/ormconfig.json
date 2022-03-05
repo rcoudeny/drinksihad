@@ -7,11 +7,12 @@
     "password": "BartjeZekers",
     "database": "drinksihad",
     "entities": [
-        "dist/database/entity/**/*.entity.js"
+        "src/database/entity/**/*.entity.ts"
     ],
     "migrations": [
-        "dist/database/migration/**.migration.js"
+        "src/database/migration/**.migration.ts"
     ],
     "autoSchemaSync": true,
-    "synchronize": true
+    "synchronize": true,
+    "logging": true
 }

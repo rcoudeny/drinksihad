@@ -7,7 +7,7 @@ import ApiService from "../../service/api.service";
 import { ROUTE_REGISTER } from "../../service/constants";
 import UserService from "../../service/user.service";
 
-export default function Login() {
+export default function LoginRoute() {
     const userContext = useContext(UserContext);
 
     const { register, handleSubmit } = useForm();
@@ -34,6 +34,6 @@ export default function Login() {
             <input {...register("password", { required: true })} placeholder="password" type='password' />
             <input type="submit" />
         </form>
-        <Link to={"/" + ROUTE_REGISTER}>Don't have an account yet? Register here</Link>
+        <Link to={ROUTE_REGISTER}>Don't have an account yet? Register here</Link>
     </div>
 }

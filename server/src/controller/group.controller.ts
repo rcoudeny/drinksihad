@@ -14,11 +14,11 @@ export class GroupController {
 
     @Get('/:id')
     @ResponseSchema(GroupDTO)
-    getGroupWithId(@Param('id') id: string) {
+    getGroupWithId(@Param('id') id: string): Promise<GroupDTO> {
         return GroupService.getGroupWithId(id);
     }
 
-    @Post('/')
+    @Post('/create')
     @ResponseSchema(GroupDTO)
     createGroup(@CurrentUser({ required: true }) user: UserDTO, @Body() createGroupDTO: CreateGroupDTO) {
         return GroupService.createGroup(user.id, createGroupDTO);

@@ -1,16 +1,12 @@
-import { getConnection, getCustomRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { Group } from '../database/entity/group.entity';
 import { User } from '../database/entity/user.entity';
-import { UserGroup } from '../database/entity/usergroup.entity';
 import { GroupRepository } from '../database/repository/group.repository';
-import { UserRepository } from '../database/repository/user.repository';
 import { UserGroupRepository } from '../database/repository/usergroup.repository';
-import { CreateGroupDTO, GroupDTO } from '../DTOs/group.dto';
-import log from '../logger';
+import { CreateGroupDTO, GroupDTO, GroupWithAdminDTO } from '../DTOs/group.dto';
 import { UserService } from './user.service';
 export abstract class GroupService {
     static async createGroup(userId: string, createGroupDTO: CreateGroupDTO): Promise<Group> {
-        // const userRepository = getCustomRepository(UserRepository);
         const groupRepository = getCustomRepository(GroupRepository);
         const userGroupRepository = getCustomRepository(UserGroupRepository);
 
@@ -20,36 +16,30 @@ export abstract class GroupService {
 
         let user: User = await UserService.getUserWithId(userId);
         userGroupRepository.createUserGroup(user, groupToAdd);
-        // user.addGroup(groupToAdd);
-        // userRepository.save(user);
         return groupToAdd;
     }
-    static async getGroupWithId(id: string): Promise<string> {
-        return "get group with id " + id;
+    static async getGroupWithId(id: string): Promise<GroupDTO> {
+        const groupRepository = getCustomRepository(GroupRepository);
+        return groupRepository.findOne(id);
     }
     static async getGroupsFromUserWithId(userId: string): Promise<GroupDTO[]> {
         const userGroupRepository = getCustomRepository(UserGroupRepository);
-        const userGroups: UserGroup[] = await userGroupRepository.findByUserId(userId);
-        const groups: UserGroup[] = await userGroupRepository.find({
+        const groups: GroupWithAdminDTO[] = (await userGroupRepository.find({
+            relations: ['group'],
             where: {
-                // relations: ['groups', 'users'],
-                userId: userId,
+                user: {
+                    id: userId
+                }
+            }
+        })).map(function (userGroup) {
+            return {
+                id: userGroup.group.id,
+                name: userGroup.group.name,
+                isAdmin: userGroup.isAdmin
             }
         });
-        log.info(groups);
-        // userGroups.forEach(userGroup => {
-        //     userGroup.
-        // })
-        // const userRepository = getCustomRepository(UserRepository);
-        // const user: User = await userRepository.findOne({
-        //     relations: ['groups'],
-        //     where: { 
-        //         id: userId
-        //     }
-        // });
 
-        return [groups[0].group];
-        // return (await userRepository.findById(userId)).groups;
+        return groups;
     }
     static async deleteGroupWithId(id: string): Promise<string> {
         return "delete group with id " + id;

@@ -3,6 +3,7 @@ import { ManyToMany, OneToMany } from "typeorm";
 import { Drink } from "./drink.entity";
 import { User } from "./user.entity";
 import { UserDrink } from "./userdrink.entity";
+import { UserGroup } from "./usergroup.entity";
 
 const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
 
@@ -15,12 +16,12 @@ export class Group {
     @IsNotEmpty()
     name: string;
 
-    @ManyToMany(() => User, user => user.groups)
-    users: User[];
-
     @OneToMany(() => Drink, drink => drink.group)
     drinks: Drink[];
 
     @OneToMany(() => UserDrink, userdrink => userdrink.group)
     userDrinks: UserDrink[];
+
+    @OneToMany(() => UserGroup, userGroup => userGroup.group)
+    userGroups: UserGroup[];
 }

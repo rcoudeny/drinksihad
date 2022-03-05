@@ -1,23 +1,28 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Register from './routes/Authentication/Register';
-import Login from './routes/Authentication/Login';
-import Home from './routes/Home/Home';
+import RegisterRoute from './routes/Authentication/Register.route';
+import LoginRoute from './routes/Authentication/Login.route';
+import HomeRoute from './routes/Home/Home.route';
 import App from './components/App/App';
-import Groups from './routes/Groups/GroupsOverview';
-import { ROUTE_GROUPS, ROUTE_LOGIN, ROUTE_REGISTER } from './service/constants';
+import GroupsRoute from './routes/Groups/Groups.route';
+import { ROUTE_CREATE_GROUP, ROUTE_GROUPS, ROUTE_GROUP_DETAIL, ROUTE_LOGIN, ROUTE_REGISTER, ROUTE_SEARCH_GROUP } from './service/constants';
+import CreateGroupRoute from './routes/Groups/CreateGroup.route';
+import SearchGroupRoute from './routes/Groups/SearchGroup.route';
+import GroupDetail from './routes/Groups/GroupDetail.route';
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
-        <Route index element={<Home />} />
-        <Route path={ROUTE_LOGIN} element={<Login />} />
-        <Route path={ROUTE_REGISTER} element={<Register />} />
-        <Route path={ROUTE_GROUPS} element={<Groups />} />
+        <Route index element={<HomeRoute />} />
+        <Route path={ROUTE_LOGIN.substring(1)} element={<LoginRoute />} />
+        <Route path={ROUTE_REGISTER.substring(1)} element={<RegisterRoute />} />
+        <Route path={ROUTE_GROUPS.substring(1)} element={<GroupsRoute />} />
+        <Route path={ROUTE_CREATE_GROUP.substring(1)} element={<CreateGroupRoute />} />
+        <Route path={ROUTE_SEARCH_GROUP.substring(1)} element={<SearchGroupRoute />} />
+        <Route path={ROUTE_GROUP_DETAIL.substring(1)} element={<GroupDetail />} />
       </Route>
     </Routes>
   </BrowserRouter>,

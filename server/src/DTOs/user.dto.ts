@@ -47,7 +47,6 @@ export abstract class UserMapper {
         userDTO.id = user.id;
         userDTO.username = user.username;
         userDTO.email = user.email;
-        userDTO.setGroups(user.groups);
         return userDTO;
     }
 
@@ -56,9 +55,6 @@ export abstract class UserMapper {
         user.id = userDTO.id;
         user.email = userDTO.email;
         user.username = userDTO.username;
-        user.groups = userDTO.groups.map(function (group) {
-            return GroupMapper.groupDTOToGroup(group);
-        });
         return user;
     }
 
@@ -66,7 +62,6 @@ export abstract class UserMapper {
         let user = new User();
         user.email = registerDTO.email.toLowerCase();
         user.username = registerDTO.username;
-        user.groups = [];
         return user;
     }
 }

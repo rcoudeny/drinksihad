@@ -15,7 +15,7 @@ import UserService from "../../service/user.service";
 //     confirmPassword: string;
 // }
 
-export default function Register() {
+export default function RegisterRoute() {
     const userContext = useContext(UserContext);
 
     const { register, handleSubmit } = useForm();
@@ -45,7 +45,7 @@ export default function Register() {
             <input {...register("confirmPassword", { required: true })} placeholder="confirm password" type="password" />
             <input type="submit" />
         </form>
-        <Link to={"/" + ROUTE_LOGIN}>Already have an account? Login here</Link>
+        <Link to={ROUTE_LOGIN}>Already have an account? Login here</Link>
     </div>
 }
 

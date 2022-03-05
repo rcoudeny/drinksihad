@@ -7,13 +7,13 @@ const TOKEN_COOKIE = "drinksIHadToken";
 
 const DOMAIN: string = window.location.protocol + "//" + window.location.hostname + ":3001/api/";
 
-function getUrl(url: string): string {
-    return DOMAIN + url;
-}
-
 interface AxiosOptions {
     headers?: any,
     body?: object
+}
+
+function getUrl(url: string): string {
+    return DOMAIN + url;
 }
 
 function getToken(): string {
@@ -30,41 +30,36 @@ function getOptions(): AxiosOptions {
     return options;
 }
 
-function currentUser(): User | null {
-    var token: string = getToken();
-    if (!token) { return null; }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64)).user;
-}
-
-function setToken(token: string) {
-    cookies.set(TOKEN_COOKIE, token, { path: "/" });
-}
-
-function getCall(url: string, body?: object): Promise<any> {
-    return axios.get(getUrl(url), getOptions());
-}
-
-function postCall(url: string, body?: object): Promise<any> {
-    return axios.post(getUrl(url), body, getOptions());
-}
-
-function putCall(url: string, body?: object): Promise<any> {
-    return axios.put(getUrl(url), body, getOptions());
-}
-
-function deleteCall(url: string, body?: object): Promise<any> {
-    return axios.delete(getUrl(url), getOptions());
+function axiosPromise(axiosPromise: Promise<any>) {
+    return axiosPromise;
+    // new Promise((resolve, reject) => {
+    //     axiosPromise.then().catch();
+    // });
 }
 
 const ApiService = {
-    currentUser: currentUser,
-    setToken: setToken,
-    getCall: getCall,
-    postCall: postCall,
-    putCall: putCall,
-    deleteCall: deleteCall
+    currentUser: function (): User | null {
+        var token: string = getToken();
+        if (!token) { return null; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64)).user;
+    },
+    setToken: function (token: string) {
+        cookies.set(TOKEN_COOKIE, token, { path: "/" });
+    },
+    getCall: function (url: string, body?: object): Promise<any> {
+        return axiosPromise(axios.get(getUrl(url), getOptions()));
+    },
+    postCall: function (url: string, body?: object): Promise<any> {
+        return axiosPromise(axios.post(getUrl(url), body, getOptions()));
+    },
+    putCall: function (url: string, body?: object): Promise<any> {
+        return axiosPromise(axios.put(getUrl(url), body, getOptions()));
+    },
+    deleteCall: function (url: string, body?: object): Promise<any> {
+        return axiosPromise(axios.delete(getUrl(url), getOptions()));
+    }
 }
 
 export default ApiService;

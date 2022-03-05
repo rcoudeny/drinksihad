@@ -2,7 +2,7 @@ import { GroupController } from './controller/group.controller';
 import log from "./logger";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { Action, createExpressServer, getMetadataArgsStorage } from "routing-controllers";
+import { Action, createExpressServer, getMetadataArgsStorage, RoutingControllersOptions } from "routing-controllers";
 import { UserController } from "./controller/user.controller";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
@@ -10,9 +10,8 @@ import { DatabaseHelper } from './database/database.helper';
 import { TokenService } from './service/token.service';
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const cookieParser = require('cookie-parser');
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
-var cors = require('cors')
+const expressPinoLogger = require('express-pino-logger');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -22,12 +21,11 @@ process.env.TOKEN_SECRET;
 
 const PORT = process.env.PORT || 3001;
 
-const routingControllersOptions = {
+const routingControllersOptions: RoutingControllersOptions = {
     controllers: [UserController, GroupController],
     cors: {
         origin: '*'// TODORC: replace with correct origin //'http://localhost:3000'
     },
-    cookieParser: cookieParser(),
     routePrefix: '/api',
     currentUserChecker: async (action: Action) => {
         // here you can use request/response objects from action
@@ -46,7 +44,7 @@ const schemas = validationMetadatasToSchemas({
     refPointerPrefix: '#/components/schemas/',
 })
 
-log.info("starting connection with database");
+log.info("Starting connection with database");
 createConnection().then(async connection => {
     // DatabaseHelper.cleanAllEntities();
     // create and setup express app
@@ -76,8 +74,15 @@ createConnection().then(async connection => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
+
+    // const loggerMidlleware = expressPinoLogger({
+    //     logger: log,
+    //     autoLogging: true,
+    // });
+    // app.use(loggerMidlleware);
+
     app.listen(PORT, () => {
-        log.info('server is listening on port ' + PORT);
+        log.info('Server is listening on port ' + PORT);
     });
 })
     .catch(function (e) {

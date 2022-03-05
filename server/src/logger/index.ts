@@ -8,7 +8,9 @@ const log = pino({
     base: {
         pid: false
     },
-    timestamp: () => `,"time":"${dayjs().format()}"`
-});
+    timestamp: () => `,"time":"${dayjs().format()}"`,
+},
+    pino.destination(`${__dirname}/logger.log`)
+);
 
 export default log;

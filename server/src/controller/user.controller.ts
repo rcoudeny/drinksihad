@@ -5,20 +5,20 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 
 @JsonController('/users')
 export class UserController {
-    @Get('/')
-    @ResponseSchema(UserDTO, { isArray: true })
-    @OpenAPI({
-        summary: 'Get all users',
-        description: 'Lists all available users',
-        responses: {
-            '400': {
-                description: 'Bad request',
-            },
-        },
-    })
-    async getAll(): Promise<string> {
-        return "Dit werkt wel?";
-    }
+    // @Get('/')
+    // @ResponseSchema(UserDTO, { isArray: true })
+    // @OpenAPI({
+    //     summary: 'Get all users',
+    //     description: 'Lists all available users',
+    //     responses: {
+    //         '400': {
+    //             description: 'Bad request',
+    //         },
+    //     },
+    // })
+    // async getAll(): Promise<string> {
+    //     return "Dit werkt wel?";
+    // }
 
     // @Get('/:id')
     // async getUserWithId(@Param('id') id: string): Promise<UserDTO> {

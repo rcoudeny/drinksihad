@@ -1,4 +1,7 @@
 export interface GroupDTO {
-    name: string;
+    name: string,
     id: string
+}
+export interface CreateGroup {
+    name: string
 }

@@ -1,7 +1,7 @@
-import { IsArray, IsEmail, IsNotEmpty, Length, MinLength, Validate } from "class-validator";
-import { JoinTable, ManyToMany } from "typeorm";
+import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { OneToMany } from "typeorm";
 import { UsernameValidation } from "../../validation/username.validation";
-import { Group } from "./group.entity";
+import { UserGroup } from "./usergroup.entity";
 
 const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
 
@@ -28,24 +28,6 @@ export class User {
     @IsNotEmpty()
     salt: string;
 
-    @ManyToMany(() => Group, group => group.users, { cascade: true })
-    @IsArray()
-    @JoinTable()
-    groups: Group[];
-
-    addGroup(groupToAdd: Group) {
-        if (!this.groups) {
-            this.groups = [];
-        }
-        this.groups.push(groupToAdd);
-    }
-
-    removeGroupWithId(groupId: string) {
-        if (this.groups) {
-            var index: number = this.groups.findIndex(group => group.id === groupId);
-            if (index !== -1) {
-                this.groups.splice(index, 1);
-            }
-        }
-    }
+    @OneToMany(() => UserGroup, userGroup => userGroup.user)
+    userGroups: UserGroup[]
 }

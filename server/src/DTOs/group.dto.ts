@@ -8,6 +8,14 @@ export class GroupDTO {
     name: string;
 }
 
+export class GroupWithAdminDTO {
+    @IsUUID()
+    id: string;
+    @IsNotEmpty()
+    name: string;
+    isAdmin: boolean;
+}
+
 export class CreateGroupDTO {
     @IsNotEmpty()
     name: string;
