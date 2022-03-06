@@ -24,7 +24,9 @@ function getOptions(): AxiosOptions {
     let options: AxiosOptions = {};
     if (cookies.get(TOKEN_COOKIE)) {
         options.headers = {
-            'Authorization': "Bearer " + getToken()
+            'Authorization': "Bearer " + getToken(),
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
         }
     }
     return options;

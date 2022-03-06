@@ -30,7 +30,7 @@ export default function GroupDetail() {
     return <div>
         {!group ? <div>Loading</div> :
             <div>
-                <div>{id} | {group.name}</div>
+                <h1>{group.name}</h1>
                 <Drinks groupId={group.id}></Drinks>
                 <GroupUsers users={users}></GroupUsers>
             </div>

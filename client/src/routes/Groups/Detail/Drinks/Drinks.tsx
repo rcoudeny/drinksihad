@@ -53,8 +53,6 @@ export default function Drinks(props: { groupId: string }) {
             {!drinks ? <div>Loading</div> : <div>{drinks.map(function (drink) {
                 return <Drink drink={drink} key={drink.id} commitDrink={commitDrink} />
             })}</div>}
-
-            <h1>Create Drink</h1>
             <EditDrink drink={{ id: '', name: '', price: 0 }} commitDrink={commitDrink}></EditDrink>
 
         </div >
