@@ -72,7 +72,7 @@ export abstract class GroupService {
         drinkToCreate.group = group;
         drinkToCreate.name = drinkDTO.name;
         drinkToCreate.price = drinkDTO.price;
-        drinkRepository.save(drinkToCreate);
+        return await drinkRepository.manager.save(drinkToCreate);
     }
     static async getDrinksFromGroupWithId(groupId: string): Promise<Drink[]> {
         return getRepository(Drink).find({

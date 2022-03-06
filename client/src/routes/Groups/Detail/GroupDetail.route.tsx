@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { GroupDTO } from "../../../models/GroupDTO";
 import { UserWithAdminDTO } from "../../../models/UserDTO";
 import GroupService from "../../../service/group.service";
+import Drinks from "./Drinks/Drinks";
 import GroupUsers from "./Users/GroupUsers";
 
 export default function GroupDetail() {
@@ -30,6 +31,7 @@ export default function GroupDetail() {
         {!group ? <div>Loading</div> :
             <div>
                 <div>{id} | {group.name}</div>
+                <Drinks groupId={group.id}></Drinks>
                 <GroupUsers users={users}></GroupUsers>
             </div>
         }

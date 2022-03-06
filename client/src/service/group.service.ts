@@ -1,3 +1,4 @@
+import { DrinkDTO } from "../models/DrinkDTO";
 import { CreateGroup, GroupDTO } from "../models/GroupDTO";
 import { UserWithAdminDTO } from "../models/UserDTO";
 import ApiService from "./api.service";
@@ -39,7 +40,24 @@ const GroupService = {
                 reject(error.response.data.message);
             });
         });
-
-    }
+    },
+    getDrinksFromGroupWithId: function (groupId: string): Promise<DrinkDTO[]> {
+        return new Promise((resolve, reject) => {
+            ApiService.getCall(GROUPS + groupId + "/drinks").then(function (response) {
+                resolve(response.data);
+            }).catch(function (error) {
+                reject(error.response.data.message);
+            })
+        })
+    },
+    addDrinkToGroupWithId: function (groupId: string, drink: DrinkDTO): Promise<DrinkDTO> {
+        return new Promise((resolve, reject) => {
+            ApiService.postCall(GROUPS + groupId + "/drinks", drink).then(function (response) {
+                resolve(response.data);
+            }).catch(function (error) {
+                reject(error.response.data.message);
+            })
+        })
+    },
 }
 export default GroupService;

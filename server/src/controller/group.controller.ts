@@ -40,12 +40,12 @@ export class GroupController {
         return GroupService.getUsersFromGroupWithId(id);
     }
 
-    @Get('/:id/drink')
+    @Get('/:id/drinks')
     getDrinksFromGroupWithId(@Param('id') id: string): Promise<DrinkDTO[]> {
         return GroupService.getDrinksFromGroupWithId(id);
     }
 
-    @Post('/:id/drink')
+    @Post('/:id/drinks')
     addDrinkToGroupWithId(@Param('id') id: string, @Body() drinkDTO: CreateDrinkDTO) {
         return GroupService.addDrinkToGroupWithId(id, drinkDTO);
     }
