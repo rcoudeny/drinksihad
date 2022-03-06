@@ -1,9 +1,9 @@
 import { CreateGroupDTO, GroupDTO } from '../DTOs/group.dto';
-import { Body, CurrentUser, Delete, Get, JsonController, Param, Post } from "routing-controllers";
+import { Authorized, Body, CurrentUser, Delete, Get, JsonController, Param, Post, Put } from "routing-controllers";
 import { GroupService } from "../service/group.service";
 import { ResponseSchema } from 'routing-controllers-openapi';
 import { UserDTO, UserWithAdminDTO } from '../DTOs/user.dto';
-import { CreateDrinkDTO, DrinkDTO } from '../DTOs/drink.dto';
+import { CreateDrinkDTO, DrinkDTO, DrinkMapper } from '../DTOs/drink.dto';
 
 @JsonController('/groups')
 export class GroupController {
@@ -48,5 +48,15 @@ export class GroupController {
     @Post('/:id/drinks')
     addDrinkToGroupWithId(@Param('id') id: string, @Body() drinkDTO: CreateDrinkDTO) {
         return GroupService.addDrinkToGroupWithId(id, drinkDTO);
+    }
+
+    @Put('/:id/drinks/:drinkId')
+    updateDrinkFromGroupWithId(@Param('id') id: string, @Param('drinkId') drinkId: string, @Body() drinkDTO: DrinkDTO): Promise<DrinkDTO> {
+        return GroupService.updateDrinkFromGroupWithId(id, drinkId, drinkDTO);
+    }
+
+    @Delete("/:id/drinks/:drinkId")
+    deleteDrinkFromGroupWithId(@Param('id') id: string, @Param('drinkId') drinkId: string): Promise<boolean> {
+        return GroupService.deleteDrinkFromGroupWithId(drinkId);
     }
 }

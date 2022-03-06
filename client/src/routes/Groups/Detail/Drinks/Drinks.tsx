@@ -1,20 +1,42 @@
 import React from "react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { DrinkDTO } from "../../../../models/DrinkDTO";
 import GroupService from "../../../../service/group.service";
+import Drink, { EditDrink } from "./DrinkComponent";
 
 export default function Drinks(props: { groupId: string }) {
     const [drinks, setDrinks] = useState<DrinkDTO[] | null>(null);
 
-    const { register, handleSubmit } = useForm();
-
-    const createDrink = (data: any) => {
-        GroupService.addDrinkToGroupWithId(props.groupId, data).then(function (drink) {
+    const createDrink = function (drink: DrinkDTO) {
+        GroupService.createDrinkInGroupWithId(props.groupId, drink).then(function (drink) {
             if (drinks) {
                 setDrinks([...drinks, drink]);
             }
         });
+    }
+    const deleteDrink = function (drinkId: string) {
+        if (drinks) {
+            GroupService.deleteDrinkInGroupWithId(props.groupId, drinkId).then(function () {
+                setDrinks(drinks.filter(drink => drink.id !== drinkId));
+            });
+        }
+    }
+    const updateDrink = function (drink: DrinkDTO) {
+        if (drinks) {
+            GroupService.updateDrinkInGroupWithId(props.groupId, drink).then(function () {
+                setDrinks(drinks.map(mDrink => mDrink.id === drink.id ? drink : mDrink));
+            });
+        }
+    }
+
+    const commitDrink = function (drink: DrinkDTO) {
+        if (!drink.id) {
+            createDrink(drink);
+        } else if (drink.toDelete) {
+            deleteDrink(drink.id);
+        } else {
+            updateDrink(drink);
+        }
     }
 
     React.useEffect(function () {
@@ -29,20 +51,13 @@ export default function Drinks(props: { groupId: string }) {
     return (
         <div>
             {!drinks ? <div>Loading</div> : <div>{drinks.map(function (drink) {
-                return <Drink drink={drink} key={drink.id} />
+                return <Drink drink={drink} key={drink.id} commitDrink={commitDrink} />
             })}</div>}
-            <form onSubmit={handleSubmit(createDrink)}>
-                <h1>Create Drink</h1>
-                <input {...register("name", { required: true })} placeholder="name" />
-                <input {...register("price", { required: true })} type="number" placeholder="price" />
-                <input type="submit" />
-            </form>
-        </div>
+
+            <h1>Create Drink</h1>
+            <EditDrink drink={{ id: '', name: '', price: 0 }} commitDrink={commitDrink}></EditDrink>
+
+        </div >
     )
 }
 
-function Drink(props: { drink: DrinkDTO }) {
-    return (
-        <div>{props.drink.name} | {props.drink.price}</div>
-    )
-}

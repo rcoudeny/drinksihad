@@ -15,7 +15,7 @@ export class Drink {
     @MinLength(2)
     name: string;
 
-    @Column()
+    @Column({ type: "float" })
     @PriceValidation()
     price: number;
 }
