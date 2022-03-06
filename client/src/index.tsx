@@ -6,11 +6,11 @@ import RegisterRoute from './routes/Authentication/Register.route';
 import LoginRoute from './routes/Authentication/Login.route';
 import HomeRoute from './routes/Home/Home.route';
 import App from './components/App/App';
-import GroupsRoute from './routes/Groups/Groups.route';
+import GroupsRoute from './routes/Groups/Overview/Groups.route';
 import { ROUTE_CREATE_GROUP, ROUTE_GROUPS, ROUTE_GROUP_DETAIL, ROUTE_LOGIN, ROUTE_REGISTER, ROUTE_SEARCH_GROUP } from './service/constants';
 import CreateGroupRoute from './routes/Groups/CreateGroup.route';
 import SearchGroupRoute from './routes/Groups/SearchGroup.route';
-import GroupDetail from './routes/Groups/GroupDetail.route';
+import GroupDetail from './routes/Groups/Detail/GroupDetail.route';
 
 ReactDOM.render(
   <BrowserRouter>

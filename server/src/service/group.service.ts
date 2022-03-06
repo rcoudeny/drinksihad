@@ -1,8 +1,11 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, getRepository } from 'typeorm';
+import { Drink } from '../database/entity/drink.entity';
 import { Group } from '../database/entity/group.entity';
 import { User } from '../database/entity/user.entity';
+import { UserGroup } from '../database/entity/usergroup.entity';
 import { GroupRepository } from '../database/repository/group.repository';
 import { UserGroupRepository } from '../database/repository/usergroup.repository';
+import { CreateDrinkDTO } from '../DTOs/drink.dto';
 import { CreateGroupDTO, GroupDTO, GroupWithAdminDTO } from '../DTOs/group.dto';
 import { UserWithAdminDTO } from '../DTOs/user.dto';
 import { UserService } from './user.service';
@@ -19,7 +22,7 @@ export abstract class GroupService {
         userGroupRepository.createUserGroup(user, groupToAdd);
         return groupToAdd;
     }
-    static async getGroupWithId(id: string): Promise<GroupDTO> {
+    static async getGroupWithId(id: string): Promise<Group> {
         const groupRepository = getCustomRepository(GroupRepository);
         return groupRepository.findOne(id);
     }
@@ -61,5 +64,36 @@ export abstract class GroupService {
     }
     static async deleteGroupWithId(id: string): Promise<string> {
         return "delete group with id " + id;
+    }
+    static async addDrinkToGroupWithId(groupId: string, drinkDTO: CreateDrinkDTO) {
+        const drinkRepository = getRepository(Drink);
+        let group: Group = await GroupService.getGroupWithId(groupId);
+        let drinkToCreate: Drink = new Drink();
+        drinkToCreate.group = group;
+        drinkToCreate.name = drinkDTO.name;
+        drinkToCreate.price = drinkDTO.price;
+        drinkRepository.save(drinkToCreate);
+    }
+    static async getDrinksFromGroupWithId(groupId: string): Promise<Drink[]> {
+        return getRepository(Drink).find({
+            where: {
+                group: {
+                    id: groupId
+                }
+            }
+        })
+    }
+
+    static async addUserWithEmailToGroupWithId(groupId: string, email: string) {
+        const userGroupRepository = getCustomRepository(UserGroupRepository);
+        UserService.getUserWithEmail(email).then(function (user: User) {
+            GroupService.getGroupWithId(groupId).then(function (group: Group) {
+                let userGroup: UserGroup = new UserGroup();
+                userGroup.group = group;
+                userGroup.user = user;
+                userGroup.isAdmin = false;
+                userGroupRepository.save(userGroup);
+            })
+        });
     }
 }

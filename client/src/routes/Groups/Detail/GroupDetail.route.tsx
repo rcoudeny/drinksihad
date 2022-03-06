@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { GroupDTO } from "../../models/GroupDTO";
-import { UserWithAdminDTO } from "../../models/UserDTO";
-import GroupService from "../../service/group.service";
+import { GroupDTO } from "../../../models/GroupDTO";
+import { UserWithAdminDTO } from "../../../models/UserDTO";
+import GroupService from "../../../service/group.service";
+import GroupUsers from "./Users/GroupUsers";
 
 export default function GroupDetail() {
     let { id } = useParams();
@@ -24,25 +25,14 @@ export default function GroupDetail() {
                 console.log(error);
             });
         }
-    }, []);
+    }, [id]);
     return <div>
         {!group ? <div>Loading</div> :
             <div>
                 <div>{id} | {group.name}</div>
-                <Users users={users}></Users>
+                <GroupUsers users={users}></GroupUsers>
             </div>
-
         }
     </div>;
-
 }
 
-function Users(props: { users: UserWithAdminDTO[] | null }) {
-    return (
-        <div>
-            {!props.users ? <div>Loading</div> : <div>{props.users.map(function (user) {
-                return (<div>{user.email} | {user.username}{user.isAdmin ? <span> | Admin</span> : ''}</div>)
-            })}</div>}
-        </div>
-    )
-}

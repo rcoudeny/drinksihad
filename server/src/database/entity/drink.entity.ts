@@ -1,4 +1,6 @@
+import { MinLength } from "class-validator";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { PriceValidation } from "../../validation/price.validation";
 import { Group } from "./group.entity";
 
 @Entity()
@@ -10,8 +12,10 @@ export class Drink {
     group: Group;
 
     @Column()
+    @MinLength(2)
     name: string;
 
     @Column()
+    @PriceValidation()
     price: number;
 }

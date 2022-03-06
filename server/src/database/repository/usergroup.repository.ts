@@ -7,12 +7,6 @@ import { UserGroup } from "../entity/usergroup.entity";
 
 @EntityRepository(UserGroup)
 export class UserGroupRepository extends Repository<UserGroup> {
-    findByUserId(userId: string): Promise<UserGroup[]> {
-        return this.createQueryBuilder('user_group').where('user_group."user_id" = :userId', { userId: userId }).getMany();
-    }
-    // findByUserId(userId: string): Promise<GroupDTO[]> {
-    //     return this.createQueryBuilder('group').where('user_group."user_id" = :userId', { userId: userId }).getMany();
-    // }
     createUserGroup(user: User, group: Group) {
         const userGroup: UserGroup = new UserGroup();
         userGroup.group = group;
