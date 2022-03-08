@@ -1,14 +1,17 @@
-import { getCustomRepository, getRepository } from 'typeorm';
+import { UserDrink } from './../database/entity/userdrink.entity';
+import { DeleteResult, getCustomRepository, getRepository, MoreThan } from 'typeorm';
 import { Drink } from '../database/entity/drink.entity';
 import { Group } from '../database/entity/group.entity';
 import { User } from '../database/entity/user.entity';
 import { UserGroup } from '../database/entity/usergroup.entity';
 import { GroupRepository } from '../database/repository/group.repository';
 import { UserGroupRepository } from '../database/repository/usergroup.repository';
-import { CreateDrinkDTO } from '../DTOs/drink.dto';
+import { CreateDrinkDTO, DrinkDTO } from '../DTOs/drink.dto';
 import { CreateGroupDTO, GroupDTO, GroupWithAdminDTO } from '../DTOs/group.dto';
 import { UserWithAdminDTO } from '../DTOs/user.dto';
 import { UserService } from './user.service';
+import { HttpError } from 'routing-controllers';
+import log from '../logger';
 export abstract class GroupService {
     static async createGroup(userId: string, createGroupDTO: CreateGroupDTO): Promise<Group> {
         const groupRepository = getCustomRepository(GroupRepository);
@@ -95,5 +98,33 @@ export abstract class GroupService {
                 userGroupRepository.save(userGroup);
             })
         });
+    }
+
+    static async updateDrinkFromGroupWithId(groupId: string, drinkId: string, drinkDTO: DrinkDTO): Promise<DrinkDTO> {
+        const drinkRepository = getRepository(Drink);
+        let drinkToUpdate: Drink = await drinkRepository.findOne(drinkId);
+        drinkToUpdate.name = drinkDTO.name;
+        drinkToUpdate.price = drinkDTO.price;
+        return drinkRepository.save(drinkToUpdate);
+    }
+
+    static async deleteDrinkFromGroupWithId(drinkId: string): Promise<boolean> {
+        let userDrinks: UserDrink[] = await getRepository(UserDrink).find({
+            relations: ['user'],
+            where: {
+                drink: {
+                    id: drinkId
+                },
+                count: MoreThan(0)
+            }
+        })
+        if (userDrinks.length === 0) {
+            getRepository(Drink).delete(drinkId);
+            return true;
+        } else {
+            throw new HttpError(405, 'Cannot delete because these users still have a drink with this: ' + userDrinks.map(function (userDrink) {
+                return userDrink.user;
+            }).join(', '));
+        }
     }
 }

@@ -47,17 +47,35 @@ const GroupService = {
                 resolve(response.data);
             }).catch(function (error) {
                 reject(error.response.data.message);
-            })
+            });
         })
     },
-    addDrinkToGroupWithId: function (groupId: string, drink: DrinkDTO): Promise<DrinkDTO> {
+    createDrinkInGroupWithId: function (groupId: string, drink: DrinkDTO): Promise<DrinkDTO> {
         return new Promise((resolve, reject) => {
             ApiService.postCall(GROUPS + groupId + "/drinks", drink).then(function (response) {
                 resolve(response.data);
             }).catch(function (error) {
                 reject(error.response.data.message);
-            })
+            });
         })
     },
+    updateDrinkInGroupWithId: function (groupId: string, drink: DrinkDTO): Promise<DrinkDTO> {
+        return new Promise((resolve, reject) => {
+            ApiService.putCall(GROUPS + groupId + "/drinks/" + drink.id, drink).then(function (response) {
+                resolve(response.data);
+            }).catch(function (error) {
+                reject(error.response.data.message);
+            });
+        })
+    },
+    deleteDrinkInGroupWithId: function (groupId: string, drinkId: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            ApiService.deleteCall(GROUPS + groupId + "/drinks/" + drinkId).then(function (response) {
+                resolve(response.data);
+            }).catch(function (error) {
+                reject(error.response.data.message);
+            });
+        })
+    }
 }
 export default GroupService;

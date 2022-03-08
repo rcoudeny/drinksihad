@@ -10,7 +10,7 @@ export default function NavigationBar() {
     const logout = userContext.logout;
     return (
         <div className="navigationContainer">
-            <div className="navigationWrapper"><Link to="/"><h1>Bookkeeper</h1></Link>
+            <div className="navigationWrapper"><Link to="/"><h1>DrinksIHad</h1></Link>
                 <nav>
                     {!!user ? <LoggedInNav user={user} logout={logout} /> : <DefaultNav />}
                 </nav>

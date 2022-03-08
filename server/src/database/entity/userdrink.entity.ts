@@ -1,3 +1,4 @@
+import { IsPositive, Min } from "class-validator";
 import { Entity, ManyToOne, Column, JoinColumn } from "typeorm";
 import { Drink } from "./drink.entity";
 import { Group } from "./group.entity";
@@ -18,5 +19,6 @@ export class UserDrink {
     drink: Drink;
 
     @Column()
+    @Min(0)
     count: number;
 }

@@ -10,7 +10,7 @@ import UserService from "../../service/user.service";
 export default function LoginRoute() {
     const userContext = useContext(UserContext);
 
-    const { register, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit } = useForm();
     const onSubmit = (data: any) => {
         let loginDTO: LoginDTO = {
             email: data.email,
@@ -26,6 +26,8 @@ export default function LoginRoute() {
             console.log(err);
         });
     };
+    console.log(errors);
+
 
     return <div>
         <form onSubmit={handleSubmit(onSubmit)}>
