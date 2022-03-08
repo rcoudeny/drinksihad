@@ -15,11 +15,7 @@ export default function GroupDetail() {
 
     React.useEffect(function () {
         if (id) {
-            GroupService.getGroup(id).then(function (response) {
-                setGroup(response);
-            }).catch(function (error) {
-                console.log(error);
-            });
+            loadGroup()
             GroupService.getUsersFromGroup(id).then(function (response) {
                 setUsers(response);
             }).catch(function (error) {
@@ -27,12 +23,25 @@ export default function GroupDetail() {
             });
         }
     }, [id]);
+
+    function loadGroup() {
+        setGroup(null);
+        if (id) {
+
+            GroupService.getGroup(id).then(function (response) {
+                setGroup(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+
     return <div>
         {!group ? <div>Loading</div> :
             <div>
                 <h1>{group.name}</h1>
                 <Drinks groupId={group.id}></Drinks>
-                <GroupUsers users={users}></GroupUsers>
+                <GroupUsers users={users} refreshGroup={loadGroup}></GroupUsers>
             </div>
         }
     </div>;

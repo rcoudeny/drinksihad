@@ -4,3 +4,9 @@ export interface DrinkDTO {
     price: number;
     toDelete?: boolean;
 }
+
+export interface DrinkCountDTO {
+    drinkId: string;
+    userId: string;
+    count: number;
+}

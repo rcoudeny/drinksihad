@@ -123,7 +123,7 @@ export abstract class GroupService {
             return true;
         } else {
             throw new HttpError(405, 'Cannot delete because these users still have a drink with this: ' + userDrinks.map(function (userDrink) {
-                return userDrink.user;
+                return userDrink.user.email;
             }).join(', '));
         }
     }

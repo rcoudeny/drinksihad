@@ -19,9 +19,6 @@ export class Group {
     @OneToMany(() => Drink, drink => drink.group)
     drinks: Drink[];
 
-    @OneToMany(() => UserDrink, userdrink => userdrink.group)
-    userDrinks: UserDrink[];
-
     @OneToMany(() => UserGroup, userGroup => userGroup.group)
     userGroups: UserGroup[];
 }

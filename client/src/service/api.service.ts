@@ -33,7 +33,13 @@ function getOptions(): AxiosOptions {
 }
 
 function axiosPromise(axiosPromise: Promise<any>) {
-    return axiosPromise;
+    return new Promise((resolve, reject) => {
+        axiosPromise.then(function (response) {
+            resolve(response.data);
+        }).catch(function (error) {
+            reject(error.response.data.message);
+        });
+    });
     // new Promise((resolve, reject) => {
     //     axiosPromise.then().catch();
     // });

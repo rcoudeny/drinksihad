@@ -7,6 +7,7 @@ import { UserController } from "./controller/user.controller";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { TokenService } from './service/token.service';
+import { DrinkController } from './controller/drink.controller';
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
@@ -20,7 +21,7 @@ process.env.TOKEN_SECRET;
 const PORT = process.env.PORT || 3001;
 
 const routingControllersOptions: RoutingControllersOptions = {
-    controllers: [UserController, GroupController],
+    controllers: [UserController, GroupController, DrinkController],
     cors: {
         origin: '*'// TODORC: replace with correct origin //'http://localhost:3000'
     },

@@ -8,6 +8,7 @@ export const ROUTE_SEARCH_GROUP: string = ROUTE_GROUPS + '/search';
 
 export const GROUPS: string = 'groups/';
 export const CREATE_GROUP: string = GROUPS + 'create/';
+export const DRINKS: string = 'drinks/'
 export const USERS: string = 'users/';
 export const REGISTER: string = 'register/';
 export const LOGIN: string = 'login/';

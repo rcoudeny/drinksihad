@@ -1,6 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 import { DrinkDTO } from "../../../../models/DrinkDTO";
+import ApiService from "../../../../service/api.service";
+import DrinkService from "../../../../service/drink.service";
 
 interface CommitDrink {
     drink: DrinkDTO,
@@ -69,10 +72,56 @@ function DisplayDrink(props: CommitDrink) {
         props.commitDrink(drinkToDelete);
     }
 
+    const toCurrency = function (price: number): string {
+        return '\u20AC' + price.toLocaleString('nl-NL', { minimumFractionDigits: 2 })
+    }
+
     const editDrink = () => {
         if (props.setEditMode) {
             props.setEditMode(true);
         }
     }
-    return <div>{props.drink.name} | {'\u20AC' + props.drink.price.toLocaleString('nl-NL', { minimumFractionDigits: 2 })} | <button onClick={editDrink}>Edit</button><button onClick={deleteDrink}>Delete</button></div>
+    return <div>
+        {props.drink.name} | {toCurrency(props.drink.price)} |
+        <button onClick={editDrink}>Edit</button><button onClick={deleteDrink}>Delete</button> |
+        <DrinkCount drinkId={props.drink.id}></DrinkCount>
+    </div>
+}
+
+function DrinkCount(props: { drinkId: string }) {
+    const [count, setCount] = useState<number>(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+    let userMail: string = searchParams.get('email') || ApiService.currentUser()?.email || '';
+
+    React.useEffect(function () {
+        DrinkService.getDrinkCount(props.drinkId, userMail)
+            .then((drinkCount) => {
+                setCount(drinkCount.count);
+            });
+    }, [props.drinkId, userMail])
+
+    const increment = function () {
+        setCount(count + 1);
+        DrinkService.incrementDrinkCount(props.drinkId, userMail).catch(function (err) {
+            console.log("distort happy flow");
+        });
+    }
+
+    const decrement = function () {
+        if (count > 0) {
+            setCount(count - 1);
+            DrinkService.decrementDrinkCount(props.drinkId, userMail).catch(function (err) {
+                console.log("distort happy flow");
+            });
+        }
+
+    }
+
+    return (
+        <React.Fragment>
+            <button onClick={decrement}>-</button>
+            <span>{count}</span>
+            <button onClick={increment}>+</button>
+        </React.Fragment>
+    )
 }

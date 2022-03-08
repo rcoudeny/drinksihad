@@ -6,76 +6,28 @@ import { CREATE_GROUP, GROUPS } from "./constants";
 
 const GroupService = {
     createGroup: function (group: CreateGroup): Promise<GroupDTO> {
-        return new Promise((resolve, reject) => {
-            ApiService.postCall(CREATE_GROUP, group).then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            })
-        })
+        return ApiService.postCall(CREATE_GROUP, group);
     },
     getGroups: function (): Promise<GroupDTO[]> {
-        return new Promise((resolve, reject) => {
-            ApiService.getCall(GROUPS).then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        })
+        return ApiService.getCall(GROUPS);
     },
     getGroup: function (id: string): Promise<GroupDTO> {
-        return new Promise((resolve, reject) => {
-            ApiService.getCall(GROUPS + id).then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        });
+        return ApiService.getCall(GROUPS + id);
     },
     getUsersFromGroup: function (id: string): Promise<UserWithAdminDTO[]> {
-        return new Promise((resolve, reject) => {
-            ApiService.getCall(GROUPS + id + "/users").then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        });
+        return ApiService.getCall(GROUPS + id + "/users");
     },
     getDrinksFromGroupWithId: function (groupId: string): Promise<DrinkDTO[]> {
-        return new Promise((resolve, reject) => {
-            ApiService.getCall(GROUPS + groupId + "/drinks").then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        })
+        return ApiService.getCall(GROUPS + groupId + "/drinks")
     },
     createDrinkInGroupWithId: function (groupId: string, drink: DrinkDTO): Promise<DrinkDTO> {
-        return new Promise((resolve, reject) => {
-            ApiService.postCall(GROUPS + groupId + "/drinks", drink).then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        })
+        return ApiService.postCall(GROUPS + groupId + "/drinks", drink);
     },
     updateDrinkInGroupWithId: function (groupId: string, drink: DrinkDTO): Promise<DrinkDTO> {
-        return new Promise((resolve, reject) => {
-            ApiService.putCall(GROUPS + groupId + "/drinks/" + drink.id, drink).then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        })
+        return ApiService.putCall(GROUPS + groupId + "/drinks/" + drink.id, drink);
     },
     deleteDrinkInGroupWithId: function (groupId: string, drinkId: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            ApiService.deleteCall(GROUPS + groupId + "/drinks/" + drinkId).then(function (response) {
-                resolve(response.data);
-            }).catch(function (error) {
-                reject(error.response.data.message);
-            });
-        })
+        return ApiService.deleteCall(GROUPS + groupId + "/drinks/" + drinkId);
     }
 }
 export default GroupService;
