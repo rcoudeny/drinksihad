@@ -119,7 +119,15 @@ export abstract class GroupService {
             }
         })
         if (userDrinks.length === 0) {
-            getRepository(Drink).delete(drinkId);
+            await getRepository(UserDrink).remove(await getRepository(UserDrink).find({
+                relations: ['user', 'drink'],
+                where: {
+                    drink: {
+                        id: drinkId
+                    }
+                }
+            }));
+            await getRepository(Drink).delete(drinkId);
             return true;
         } else {
             throw new HttpError(405, 'Cannot delete because these users still have a drink with this: ' + userDrinks.map(function (userDrink) {

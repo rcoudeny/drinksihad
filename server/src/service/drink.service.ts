@@ -28,19 +28,20 @@ export abstract class DrinkService {
         return getCustomRepository(UserDrinkRepository).createUserDrinkWithCount(user, drink, count);
     }
 
-    static async decrementCount(drinkId: string, user: User) {
+    static async decrementCount(drinkId: string, user: User): Promise<UserDrink> {
         let userDrink: UserDrink = await this.getDrink(drinkId, user.id);
         if (!userDrink) {
-            return DrinkService.createUserDrink(drinkId, user, 0);
+            DrinkService.createUserDrink(drinkId, user, 0);
         }
         userDrink.count--;
         if (userDrink.count < 0) {
             userDrink.count = 0;
         }
-        return getCustomRepository(UserDrinkRepository).save(userDrink);
+        getCustomRepository(UserDrinkRepository).save(userDrink);
+        return userDrink;
     }
 
-    static async incrementCount(drinkId: string, user: User) {
+    static async incrementCount(drinkId: string, user: User): Promise<UserDrink> {
         let userDrink: UserDrink = await this.getDrink(drinkId, user.id);
         if (!userDrink) {
             return DrinkService.createUserDrink(drinkId, user, 1);
