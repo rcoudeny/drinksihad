@@ -1,4 +1,4 @@
-import { MinLength } from "class-validator";
+import { IsPositive, MinLength } from "class-validator";
 import { PriceValidation } from "../validation/price.validation";
 
 export class DrinkDTO {
@@ -13,4 +13,11 @@ export class CreateDrinkDTO {
     name: string;
     @PriceValidation()
     price: number;
+}
+
+export class UserDrinkDTO {
+    userMail: string;
+    drinkId: string;
+    @IsPositive()
+    amount: number;
 }
