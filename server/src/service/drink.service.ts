@@ -5,7 +5,7 @@ import { UserDrink } from "../database/entity/userdrink.entity";
 import { UserDrinkRepository } from "../database/repository/userdrink.repository";
 
 export abstract class DrinkService {
-    static async getDrink(drinkId: string, userId: string): Promise<UserDrink> {
+    static async getUserDrink(drinkId: string, userId: string): Promise<UserDrink> {
         return getRepository(UserDrink).findOne({
             relations: ['user', 'drink'],
             where: {
@@ -19,6 +19,25 @@ export abstract class DrinkService {
         });
     }
 
+    static async getCount(drinkId: string, userId: string): Promise<number> {
+        let count: number = 0;
+        await getRepository(UserDrink).findOne({
+            where: {
+                user: {
+                    id: userId
+                },
+                drink: {
+                    id: drinkId
+                }
+            }
+        }).then(function (userDrink: UserDrink) {
+            if (userDrink) {
+                count = userDrink.count;
+            }
+        });
+        return count;
+    }
+
     static async createUserDrink(drinkId: string, user: User, count: number): Promise<UserDrink> {
         let drink: Drink = (await getRepository(Drink).findOne({
             where: {
@@ -29,7 +48,7 @@ export abstract class DrinkService {
     }
 
     static async decrementCount(drinkId: string, user: User): Promise<UserDrink> {
-        let userDrink: UserDrink = await this.getDrink(drinkId, user.id);
+        let userDrink: UserDrink = await this.getUserDrink(drinkId, user.id);
         if (!userDrink) {
             DrinkService.createUserDrink(drinkId, user, 0);
         }
@@ -42,7 +61,7 @@ export abstract class DrinkService {
     }
 
     static async incrementCount(drinkId: string, user: User): Promise<UserDrink> {
-        let userDrink: UserDrink = await this.getDrink(drinkId, user.id);
+        let userDrink: UserDrink = await this.getUserDrink(drinkId, user.id);
         if (!userDrink) {
             return DrinkService.createUserDrink(drinkId, user, 1);
         }

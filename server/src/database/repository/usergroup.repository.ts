@@ -1,5 +1,4 @@
 import { EntityRepository, Repository } from "typeorm";
-import { GroupDTO } from "../../DTOs/group.dto";
 import { Group } from "../entity/group.entity";
 import { User } from "../entity/user.entity";
 import { UserGroup } from "../entity/usergroup.entity";

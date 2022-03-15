@@ -1,8 +1,10 @@
 import React from "react";
 import { useState } from "react";
+import Loader from "../../../../components/Utils/Loader/Loader";
 import { DrinkDTO } from "../../../../models/DrinkDTO";
 import GroupService from "../../../../service/group.service";
-import Drink, { EditDrink } from "./DrinkComponent";
+import Drink from "./Drink";
+import { EditDrink } from "./EditDrink";
 
 export default function Drinks(props: { groupId: string }) {
     const [drinks, setDrinks] = useState<DrinkDTO[] | null>(null);
@@ -42,15 +44,14 @@ export default function Drinks(props: { groupId: string }) {
     React.useEffect(function () {
         GroupService.getDrinksFromGroupWithId(props.groupId).then(function (drinks) {
             setDrinks(drinks);
-            console.log(drinks);
         }).catch(function (err) {
             console.log(err);
         })
-    }, [])
+    }, [props.groupId])
 
     return (
         <div>
-            {!drinks ? <div>Loading</div> : <div>{drinks.map(function (drink) {
+            {!drinks ? <Loader /> : <div>{drinks.map(function (drink) {
                 return <Drink drink={drink} key={drink.id} commitDrink={commitDrink} />
             })}</div>}
             <EditDrink drink={{ id: '', name: '', price: 0 }} commitDrink={commitDrink}></EditDrink>

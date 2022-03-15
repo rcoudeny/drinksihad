@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import Loader from "../../../components/Utils/Loader/Loader";
 import { GroupDTO } from "../../../models/GroupDTO";
 import { UserWithAdminDTO } from "../../../models/UserDTO";
 import GroupService from "../../../service/group.service";
@@ -15,7 +16,11 @@ export default function GroupDetail() {
 
     React.useEffect(function () {
         if (id) {
-            loadGroup()
+            GroupService.getGroup(id).then(function (response) {
+                setGroup(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
             GroupService.getUsersFromGroup(id).then(function (response) {
                 setUsers(response);
             }).catch(function (error) {
@@ -24,26 +29,12 @@ export default function GroupDetail() {
         }
     }, [id]);
 
-    function loadGroup() {
-        setGroup(null);
-        if (id) {
-
-            GroupService.getGroup(id).then(function (response) {
-                setGroup(response);
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }
-
     return <div>
-        {!group ? <div>Loading</div> :
-            <div>
-                <h1>{group.name}</h1>
-                <Drinks groupId={group.id}></Drinks>
-                <GroupUsers users={users} refreshGroup={loadGroup}></GroupUsers>
-            </div>
-        }
+        <div>
+            <h1> {!group ? <Loader /> : <span>{group.name}</span>}</h1>
+            <Drinks groupId={id || ''}></Drinks>
+            {!users ? <Loader /> : <GroupUsers users={users}></GroupUsers>}
+        </div>
     </div>;
 }
 

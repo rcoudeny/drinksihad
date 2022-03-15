@@ -1,11 +1,11 @@
 {
     "name": "default",
-    "type": "postgres",
+    "type": "sqlite",
     "host": "localhost",
     "port": 5432,
     "username": "rcdn",
     "password": "BartjeZekers",
-    "database": "drinksihad",
+    "database": "./drinksihad.sql",
     "entities": [
         "src/database/entity/**/*.entity.ts"
     ],

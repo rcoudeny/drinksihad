@@ -2,6 +2,7 @@ import { User } from './../models/UserDTO';
 
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { ROUTE_LOGIN } from './constants';
 const cookies = new Cookies();
 const TOKEN_COOKIE = "drinksIHadToken";
 
@@ -37,6 +38,9 @@ function axiosPromise(axiosPromise: Promise<any>) {
         axiosPromise.then(function (response) {
             resolve(response.data);
         }).catch(function (error) {
+            if (error.response.status === 401) {
+                window.location.href = ROUTE_LOGIN + "?authorizationFailed=true";
+            }
             reject(error.response.data.message);
         });
     });

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../../components/Utils/Loader/Loader";
 import { GroupDTO } from "../../../models/GroupDTO";
 import { ROUTE_CREATE_GROUP, ROUTE_GROUPS, ROUTE_SEARCH_GROUP } from "../../../service/constants";
 import GroupService from "../../../service/group.service";
@@ -48,7 +49,7 @@ function Error(props: { message: string }) {
 function GroupsTemplate(props: { groups: GroupDTO[] | null }) {
     return <div className="groupsContainer">
         <div>
-            {props.groups === null ? <div>Loading groups...</div> : props.groups.map(function (group) {
+            {props.groups === null ? <Loader /> : props.groups.map(function (group) {
                 return <GroupTemplate key={group.id} {...group}></GroupTemplate>
             })}
         </div>

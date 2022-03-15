@@ -3,7 +3,7 @@ import ApiService from "./api.service";
 import { DRINKS } from "./constants";
 
 const DrinkService = {
-    getDrinkCount(drinkId: string, userMail: string): Promise<DrinkCountDTO> {
+    getDrinkCount(drinkId: string, userMail: string): Promise<number> {
         return ApiService.getCall(`${DRINKS}${drinkId}/${userMail}`);
     },
     incrementDrinkCount(drinkId: string, userMail: string): Promise<DrinkCountDTO> {

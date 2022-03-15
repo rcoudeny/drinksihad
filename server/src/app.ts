@@ -30,11 +30,11 @@ const routingControllersOptions: RoutingControllersOptions = {
         // here you can use request/response objects from action
         // you need to provide a user object that will be injected in controller actions
         // demo code:
-        const token = action.request.headers['authorization'].replace('Bearer ', '');
-        if (token) {
-            return TokenService.getCurrentUser(token);
-        }
-        return null;
+        const authorization = action.request.headers['authorization'];
+        if (!authorization) return null;
+        const token = authorization.replace('Bearer ', '');
+        if (!token) return null;
+        return TokenService.getCurrentUser(token);
     },
 };
 
