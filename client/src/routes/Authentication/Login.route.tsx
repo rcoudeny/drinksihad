@@ -1,14 +1,16 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useSearchParams } from "react-router-dom";
-import { UserContext } from "../../components/App/contexts";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { UserActionType, UserContext } from "../../contexts/user.context";
 import { LoginDTO } from "../../models/UserDTO";
 import ApiService from "../../service/api.service";
-import { ROUTE_REGISTER } from "../../service/constants";
+import { ROUTE_GROUPS, ROUTE_REGISTER } from "../../service/constants";
 import UserService from "../../service/user.service";
 
 export default function LoginRoute() {
     const userContext = useContext(UserContext);
+    const navigate = useNavigate();
+    let path = useSearchParams()[0].get('path');
 
     const { register, formState: { errors }, handleSubmit } = useForm();
     const onSubmit = (data: any) => {
@@ -20,7 +22,12 @@ export default function LoginRoute() {
         UserService.login(loginDTO).then(function (response: string) {
             let user = ApiService.currentUser();
             if (user) {
-                userContext.login(user);
+                userContext.dispatch({ type: UserActionType.LOGIN, payload: user })
+                if (path) {
+                    navigate(path);
+                } else {
+                    navigate(ROUTE_GROUPS);
+                }
             }
         }).catch(function (err) {
             console.log(err);

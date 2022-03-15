@@ -1,13 +1,18 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserActionType, UserContext } from "../../contexts/user.context";
 import { User } from "../../models/UserDTO";
-import { UserContext } from "../App/contexts";
+import { ROUTE_LOGIN } from "../../service/constants";
 import './NavigationBar.css';
 
 export default function NavigationBar() {
     const userContext = useContext(UserContext);
-    const user = userContext.user;
-    const logout = userContext.logout;
+    const user = userContext.state.user;
+    const navigate = useNavigate();
+    const logout = () => {
+        userContext.dispatch({ type: UserActionType.LOGOUT, payload: null });
+        navigate(ROUTE_LOGIN);
+    }
     return (
         <div className="navigationContainer">
             <div className="navigationWrapper"><Link to="/"><h1>DrinksIHad</h1></Link>

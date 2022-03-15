@@ -2,7 +2,7 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../components/App/contexts";
+import { UserActionType, UserContext } from "../../contexts/user.context";
 import { RegisterDTO } from "../../models/UserDTO";
 import ApiService from "../../service/api.service";
 import { ROUTE_LOGIN } from "../../service/constants";
@@ -29,7 +29,7 @@ export default function RegisterRoute() {
         UserService.createUser(registerDTO).then(function (response: string) {
             let user = ApiService.currentUser();
             if (user) {
-                userContext.login(user);
+                userContext.dispatch({ type: UserActionType.LOGIN, payload: user })
             }
         }).catch(function (err) {
             console.log(err);

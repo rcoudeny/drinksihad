@@ -39,7 +39,7 @@ function axiosPromise(axiosPromise: Promise<any>) {
             resolve(response.data);
         }).catch(function (error) {
             if (error.response.status === 401) {
-                window.location.href = ROUTE_LOGIN + "?authorizationFailed=true";
+                window.location.href = ROUTE_LOGIN + "?authorizationFailed=true&path=" + window.location.pathname + window.location.search;
             }
             reject(error.response.data.message);
         });
