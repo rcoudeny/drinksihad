@@ -7,7 +7,6 @@ import './NavigationBar.css';
 
 export default function NavigationBar() {
     const userContext = useContext(UserContext);
-    const user = userContext.state.user;
     const navigate = useNavigate();
     const logout = () => {
         userContext.dispatch({ type: UserActionType.LOGOUT, payload: null });
@@ -17,7 +16,7 @@ export default function NavigationBar() {
         <div className="navigationContainer">
             <div className="navigationWrapper"><Link to="/"><h1>DrinksIHad</h1></Link>
                 <nav>
-                    {!!user ? <LoggedInNav user={user} logout={logout} /> : <DefaultNav />}
+                    {!!userContext.state.user ? <LoggedInNav user={userContext.state.user} logout={logout} /> : <DefaultNav />}
                 </nav>
             </div>
         </div>

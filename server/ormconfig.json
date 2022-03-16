@@ -5,7 +5,7 @@
     "port": 5432,
     "username": "rcdn",
     "password": "BartjeZekers",
-    "database": "./drinksihad.sql",
+    "database": "./drinksihad.sqlite",
     "entities": [
         "src/database/entity/**/*.entity.ts"
     ],

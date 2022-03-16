@@ -1,8 +1,8 @@
-import { CurrentUser, Get, JsonController, Param, Put } from "routing-controllers";
+import { Body, CurrentUser, Delete, Get, JsonController, Param, Post, Put } from "routing-controllers";
 import { UserDTO } from "../DTOs/user.dto";
 import { DrinkService } from '../service/drink.service';
 import { UserService } from '../service/user.service';
-import { DrinkMapper, UserDrinkDTO } from '../DTOs/drink.dto';
+import { CreateDrinkDTO, DrinkDTO, DrinkMapper, UserDrinkDTO } from '../DTOs/drink.dto';
 
 @JsonController('/drinks')
 export class DrinkController {
@@ -21,4 +21,23 @@ export class DrinkController {
         return DrinkMapper.toUserDrinkDTO(await DrinkService.incrementCount(drinkId, (await UserService.getUserWithEmail(userMail))));
     }
 
+    @Get('/:groupId')
+    getDrinksFromGroup(@Param('groupId') groupId: string): Promise<DrinkDTO[]> {
+        return DrinkService.getDrinksFromGroupWithId(groupId);
+    }
+
+    @Post('/:groupId')
+    addDrinkToGroupWithId(@Param('groupId') groupId: string, @Body() drinkDTO: CreateDrinkDTO) {
+        return DrinkService.addDrinkToGroupWithId(groupId, drinkDTO);
+    }
+
+    @Put('/:drinkId')
+    updateDrink(@Param('drinkId') drinkId: string, @Body() drinkDTO: DrinkDTO): Promise<DrinkDTO> {
+        return DrinkService.updateDrink(drinkId, drinkDTO);
+    }
+
+    @Delete("/:drinkId")
+    deleteDrink(@Param('drinkId') drinkId: string): Promise<boolean> {
+        return DrinkService.deleteDrink(drinkId);
+    }
 }

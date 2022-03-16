@@ -30,17 +30,17 @@ function userReducer(state: UserState, action: UserAction) {
 
 const initialState = { user: ApiService.currentUser() }
 
-interface UserContextValue {
+interface UserContextInterface {
     state: UserState;
     dispatch: React.Dispatch<UserAction>
 }
 
-const UserContext: React.Context<UserContextValue> = React.createContext({
+const UserContext: React.Context<UserContextInterface> = React.createContext({
     state: initialState,
     dispatch: (action) => console.error("Dispatched action outside of an UserContext provider", action)
 });
 
-function UserProvider(props: { children: JSX.Element[] | JSX.Element }) {
+const UserProvider = (props: { children: JSX.Element[] | JSX.Element }) => {
     const [state, dispatch] = useReducer(userReducer, initialState);
     return (
         <UserContext.Provider value={{ state, dispatch }}>

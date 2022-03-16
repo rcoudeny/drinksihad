@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Loader from "../../../../components/Utils/Loader/Loader";
 import { DrinkDTO } from "../../../../models/DrinkDTO";
-import GroupService from "../../../../service/group.service";
+import DrinkService from "../../../../service/drink.service";
 import Drink from "./Drink";
 import { EditDrink } from "./EditDrink";
 
@@ -10,7 +10,7 @@ export default function Drinks(props: { groupId: string }) {
     const [drinks, setDrinks] = useState<DrinkDTO[] | null>(null);
 
     const createDrink = function (drink: DrinkDTO) {
-        GroupService.createDrinkInGroupWithId(props.groupId, drink).then(function (drink) {
+        DrinkService.createDrinkInGroupWithId(props.groupId, drink).then(function (drink) {
             if (drinks) {
                 setDrinks([...drinks, drink]);
             }
@@ -18,14 +18,14 @@ export default function Drinks(props: { groupId: string }) {
     }
     const deleteDrink = function (drinkId: string) {
         if (drinks) {
-            GroupService.deleteDrinkInGroupWithId(props.groupId, drinkId).then(function () {
+            DrinkService.deleteDrink(drinkId).then(function () {
                 setDrinks(drinks.filter(drink => drink.id !== drinkId));
             });
         }
     }
     const updateDrink = function (drink: DrinkDTO) {
         if (drinks) {
-            GroupService.updateDrinkInGroupWithId(props.groupId, drink).then(function () {
+            DrinkService.updateDrink(drink).then(function () {
                 setDrinks(drinks.map(mDrink => mDrink.id === drink.id ? drink : mDrink));
             });
         }
@@ -42,7 +42,7 @@ export default function Drinks(props: { groupId: string }) {
     }
 
     React.useEffect(function () {
-        GroupService.getDrinksFromGroupWithId(props.groupId).then(function (drinks) {
+        DrinkService.getDrinksFromGroupWithId(props.groupId).then(function (drinks) {
             setDrinks(drinks);
         }).catch(function (err) {
             console.log(err);

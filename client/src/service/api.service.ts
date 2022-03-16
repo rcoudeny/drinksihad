@@ -2,11 +2,11 @@ import { User } from './../models/UserDTO';
 
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import { ROUTE_LOGIN } from './constants';
+import { ROUTE_LOGIN, API_PORT, API } from './constants';
 const cookies = new Cookies();
 const TOKEN_COOKIE = "drinksIHadToken";
 
-const DOMAIN: string = window.location.protocol + "//" + window.location.hostname + ":3001/api/";
+const DOMAIN: string = `${window.location.protocol}//${window.location.hostname}:${API_PORT}/${API}/`;
 
 interface AxiosOptions {
     headers?: any,
